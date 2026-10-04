@@ -312,8 +312,11 @@ async function loadRoutines() {
       try {
         const parsed = JSON.parse(saved);
 
-        if (isValidData(parsed)) {
-          loaded = normalizeData(parsed);
+        if (
+  isValidData(parsed) &&
+  parsed.routines.length > 0
+) {
+  loaded = normalizeData(parsed);
         }
       } catch (storageError) {
         console.warn(
