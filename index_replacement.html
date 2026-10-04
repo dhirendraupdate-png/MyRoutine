@@ -1,0 +1,2224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0b1020">
+  <meta name="description" content="MyRoutine — a modern routine and timetable workspace.">
+  <title>MyRoutine — Your Routine. Your Way.</title>
+
+  <style>
+    *{box-sizing:border-box}
+    :root{
+      --bg:#f5f7fb;
+      --surface:rgba(255,255,255,.92);
+      --surface-solid:#fff;
+      --surface-soft:#f0f3f9;
+      --text:#101828;
+      --muted:#667085;
+      --faint:#98a2b3;
+      --border:#e4e7ec;
+      --primary:#5b4df5;
+      --primary-2:#7c3aed;
+      --primary-soft:#eeebff;
+      --success:#16a34a;
+      --warning:#d97706;
+      --danger:#dc2626;
+      --shadow:0 16px 45px rgba(16,24,40,.08);
+      --shadow-sm:0 6px 20px rgba(16,24,40,.07);
+      --radius:22px;
+      --radius-sm:14px;
+    }
+
+    html,body{
+      margin:0;
+      padding:0;
+      min-height:100%;
+      background:
+        radial-gradient(circle at 10% 0%,rgba(91,77,245,.09),transparent 28%),
+        radial-gradient(circle at 100% 10%,rgba(124,58,237,.08),transparent 26%),
+        var(--bg);
+      color:var(--text);
+      font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    }
+
+    body{min-height:100vh}
+    button,input,select{font:inherit}
+    button{cursor:pointer}
+    button:disabled{opacity:.55;cursor:not-allowed}
+
+    .app{min-height:100vh}
+
+    /* TOP BAR */
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:60;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      padding:12px max(16px,calc((100vw - 1240px)/2));
+      background:rgba(245,247,251,.82);
+      backdrop-filter:blur(22px);
+      border-bottom:1px solid rgba(228,231,236,.8);
+    }
+
+    .brand{display:flex;align-items:center;gap:11px;min-width:0}
+    .logo{
+      width:44px;height:44px;border-radius:15px;
+      display:grid;place-items:center;
+      color:#fff;font-weight:900;font-size:16px;
+      background:linear-gradient(135deg,var(--primary),var(--primary-2));
+      box-shadow:0 10px 24px rgba(91,77,245,.28);
+      flex:0 0 auto;
+    }
+    .brand h1{font-size:17px;margin:0;line-height:1.1}
+    .brand p{font-size:11px;color:var(--muted);margin:4px 0 0}
+    .top-actions{display:flex;gap:8px;align-items:center}
+
+    .icon-btn,.btn{
+      border:1px solid var(--border);
+      background:var(--surface-solid);
+      color:var(--text);
+      border-radius:13px;
+      padding:10px 13px;
+      transition:.18s ease;
+    }
+    .icon-btn:hover,.btn:hover{transform:translateY(-1px);box-shadow:var(--shadow-sm)}
+    .icon-btn{width:44px;height:44px;padding:0}
+    .btn.primary{
+      background:linear-gradient(135deg,var(--primary),var(--primary-2));
+      border-color:transparent;color:#fff;
+      box-shadow:0 8px 20px rgba(91,77,245,.22);
+    }
+    .btn.soft{background:var(--primary-soft);border-color:#ddd8ff;color:#4338ca}
+    .btn.danger{color:#fff;background:var(--danger);border-color:var(--danger)}
+    .btn.small{padding:8px 10px;font-size:13px}
+    .btn.ghost{background:transparent;border-color:transparent}
+    .status-pill{
+      display:inline-flex;align-items:center;gap:6px;
+      padding:7px 10px;border-radius:999px;
+      font-size:11px;font-weight:700;
+      background:#ecfdf3;color:#15803d;border:1px solid #bbf7d0;
+    }
+    .status-dot{width:7px;height:7px;border-radius:50%;background:#22c55e}
+
+    /* HOME */
+    .home-wrap{max-width:1240px;margin:0 auto;padding:22px 18px 70px}
+
+    .hero{
+      display:grid;
+      grid-template-columns:minmax(0,1.35fr) minmax(300px,.65fr);
+      gap:16px;
+      margin-bottom:16px;
+    }
+
+    .hero-card,.panel,.feature,.routine-card,.stat-card{
+      background:var(--surface);
+      border:1px solid rgba(228,231,236,.92);
+      box-shadow:var(--shadow);
+      backdrop-filter:blur(18px);
+    }
+
+    .hero-card{
+      min-height:330px;
+      padding:30px;
+      border-radius:28px;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .hero-card:after{
+      content:"";
+      position:absolute;
+      width:220px;height:220px;
+      right:-80px;top:-90px;
+      border-radius:50%;
+      background:linear-gradient(135deg,rgba(91,77,245,.18),rgba(124,58,237,.05));
+    }
+
+    .eyebrow{
+      display:inline-flex;align-items:center;gap:7px;
+      padding:7px 10px;border-radius:999px;
+      background:var(--primary-soft);
+      color:#5146d8;font-size:11px;font-weight:800;
+      margin-bottom:17px;
+    }
+
+    .hero h2{
+      max-width:700px;
+      font-size:clamp(34px,5vw,58px);
+      line-height:.98;
+      letter-spacing:-.045em;
+      margin:0 0 15px;
+    }
+    .hero h2 span{color:var(--primary)}
+    .hero p{max-width:650px;color:var(--muted);line-height:1.65;margin:0 0 22px;font-size:15px}
+    .hero-actions{display:flex;gap:10px;flex-wrap:wrap;position:relative;z-index:2}
+
+    .hero-side{
+      padding:20px;
+      border-radius:28px;
+      background:linear-gradient(160deg,#11182c,#20294b);
+      color:#fff;
+      box-shadow:0 18px 45px rgba(17,24,39,.18);
+    }
+    .hero-side .mini-label{color:#aeb8d2}
+    .hero-side h3{font-size:25px;margin:7px 0 4px}
+    .hero-side p{color:#aeb8d2;font-size:13px;line-height:1.55;margin:0}
+    .hero-side-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}
+    .hero-side-item{
+      padding:13px;border-radius:16px;
+      background:rgba(255,255,255,.07);
+      border:1px solid rgba(255,255,255,.1);
+    }
+    .hero-side-item b{display:block;font-size:18px}
+    .hero-side-item span{font-size:11px;color:#aeb8d2}
+
+    .section-head{
+      display:flex;align-items:flex-end;justify-content:space-between;
+      gap:10px;margin:24px 0 12px;
+    }
+    .section-head h3{margin:0;font-size:20px;letter-spacing:-.02em}
+    .section-head p{margin:4px 0 0;color:var(--muted);font-size:12px}
+
+    .routine-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}
+    .routine-card{
+      padding:17px;border-radius:20px;
+      transition:.18s ease;
+    }
+    .routine-card:hover{transform:translateY(-2px);box-shadow:0 20px 48px rgba(16,24,40,.11)}
+    .routine-card-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+    .routine-icon{
+      width:42px;height:42px;border-radius:13px;
+      display:grid;place-items:center;
+      color:#4c43d4;background:var(--primary-soft);
+      font-weight:900;
+    }
+    .routine-card h4{margin:13px 0 5px;font-size:17px}
+    .routine-meta{font-size:12px;color:var(--muted);line-height:1.6;min-height:42px}
+    .routine-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:14px}
+    .empty{
+      grid-column:1/-1;
+      padding:38px 22px;text-align:center;
+      color:var(--muted);
+      border:1px dashed #cfd5df;
+      border-radius:20px;
+      background:rgba(255,255,255,.62);
+    }
+    .empty-icon{
+      width:54px;height:54px;border-radius:17px;
+      display:grid;place-items:center;margin:0 auto 12px;
+      background:var(--primary-soft);font-size:24px;
+    }
+
+    .features{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+    .feature{padding:17px;border-radius:18px}
+    .feature-icon{
+      width:38px;height:38px;border-radius:12px;
+      display:grid;place-items:center;
+      background:var(--surface-soft);
+      font-size:18px;
+    }
+    .feature b{display:block;margin:11px 0 5px}
+    .feature span{font-size:12px;color:var(--muted);line-height:1.55}
+
+    /* WORKSPACE */
+    #workspace{display:none}
+    .workspace-shell{max-width:1240px;margin:0 auto;padding:18px 18px 60px}
+    .workspace-bar{
+      display:flex;align-items:center;gap:9px;flex-wrap:wrap;
+      margin-bottom:14px;
+    }
+    .workspace-title{flex:1;min-width:190px}
+    .workspace-title h2{margin:0;font-size:23px;letter-spacing:-.025em}
+    .workspace-title p{margin:4px 0 0;color:var(--muted);font-size:12px}
+    .workspace-panel{
+      min-height:70vh;
+      background:transparent;
+    }
+
+    .dashboard-shell{
+      display:grid;
+      grid-template-columns:minmax(0,1fr) 320px;
+      gap:14px;
+    }
+    .dashboard-main,.dashboard-side{
+      display:flex;flex-direction:column;gap:14px;
+    }
+    .panel{border-radius:22px;padding:18px}
+    .panel-title{
+      display:flex;align-items:center;justify-content:space-between;
+      gap:10px;margin-bottom:14px;
+    }
+    .panel-title h3{margin:0;font-size:16px}
+    .panel-title span{font-size:11px;color:var(--muted)}
+
+    .welcome{
+      padding:22px;
+      border-radius:22px;
+      color:#fff;
+      background:linear-gradient(135deg,#161c31,#303b6d);
+      box-shadow:0 18px 45px rgba(22,28,49,.18);
+    }
+    .welcome small{color:#b9c1d9}
+    .welcome h3{margin:7px 0 5px;font-size:26px}
+    .welcome p{margin:0;color:#c4cbe0;font-size:13px;line-height:1.55}
+    .dashboard-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+    .dashboard-actions .btn{background:rgba(255,255,255,.1);color:#fff;border-color:rgba(255,255,255,.14)}
+
+    .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+    .stat-card{padding:15px;border-radius:18px}
+    .stat-card span{font-size:11px;color:var(--muted)}
+    .stat-card strong{display:block;font-size:25px;margin-top:5px;letter-spacing:-.03em}
+    .stat-card em{font-style:normal;font-size:10px;color:var(--faint)}
+
+    .next-class{
+      padding:16px;border-radius:18px;
+      background:linear-gradient(135deg,var(--primary-soft),#f7f5ff);
+      border:1px solid #ded9ff;
+    }
+    .next-class .label{font-size:11px;color:#5b54a8;font-weight:800}
+    .next-class h4{margin:7px 0 3px;font-size:20px}
+    .next-class p{margin:0;color:#66618d;font-size:12px}
+
+    .today-list{display:grid;gap:8px}
+    .class-row{
+      display:grid;
+      grid-template-columns:82px minmax(0,1fr) auto;
+      gap:10px;align-items:center;
+      padding:11px;
+      border-radius:14px;
+      background:var(--surface-soft);
+    }
+    .class-time{font-size:11px;font-weight:800}
+    .class-name{font-size:13px;font-weight:750}
+    .class-sub{font-size:10px;color:var(--muted);margin-top:2px}
+    .class-badge{
+      padding:5px 8px;border-radius:999px;
+      background:#fff;border:1px solid var(--border);
+      font-size:10px;color:var(--muted)
+    }
+
+    .week-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:7px}
+    .day-card{
+      min-height:105px;padding:10px;border-radius:15px;
+      background:var(--surface-soft);
+      border:1px solid transparent;
+    }
+    .day-card.active{background:var(--primary-soft);border-color:#ddd8ff}
+    .day-name{font-size:11px;font-weight:800}
+    .day-count{font-size:10px;color:var(--muted);margin-top:4px}
+    .day-bar{height:5px;border-radius:99px;background:#dfe3eb;margin-top:13px;overflow:hidden}
+    .day-bar i{display:block;height:100%;width:40%;border-radius:99px;background:var(--primary)}
+
+    .quick-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+    .quick-action{
+      text-align:left;padding:13px;border-radius:15px;
+      border:1px solid var(--border);background:var(--surface-solid);
+    }
+    .quick-action b{display:block;font-size:12px}
+    .quick-action span{font-size:10px;color:var(--muted)}
+
+    /* MODAL */
+    .modal-backdrop{
+      position:fixed;inset:0;z-index:100;
+      display:none;
+      background:rgba(15,23,42,.56);
+      backdrop-filter:blur(7px);
+      padding:14px;
+      align-items:center;justify-content:center;
+    }
+    .modal-backdrop.open{display:flex}
+    .modal{
+      width:min(600px,100%);
+      max-height:92vh;overflow:auto;
+      background:var(--surface-solid);
+      border-radius:24px;
+      border:1px solid var(--border);
+      box-shadow:0 30px 90px rgba(0,0,0,.25);
+    }
+    .modal-head{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:18px 20px;border-bottom:1px solid var(--border)
+    }
+    .modal-head h3{margin:0;font-size:18px}
+    .modal-body{padding:20px}
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+    .field{display:flex;flex-direction:column;gap:6px}
+    .field.full{grid-column:1/-1}
+    .field label{font-size:11px;font-weight:800;color:var(--muted)}
+    .field input,.field select{
+      width:100%;padding:11px 12px;
+      border:1px solid var(--border);
+      border-radius:12px;background:#fff;color:var(--text);
+      outline:none;
+    }
+    .field input:focus,.field select:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(91,77,245,.1)}
+    .modal-footer{
+      display:flex;justify-content:flex-end;gap:8px;
+      padding:15px 20px;border-top:1px solid var(--border)
+    }
+
+    .toast{
+      position:fixed;left:50%;bottom:22px;z-index:300;
+      transform:translate(-50%,20px);opacity:0;pointer-events:none;
+      background:#111827;color:#fff;padding:11px 15px;border-radius:13px;
+      box-shadow:0 15px 35px rgba(0,0,0,.2);
+      transition:.2s;font-size:13px;
+    }
+    .toast.show{opacity:1;transform:translate(-50%,0)}
+    .hidden{display:none!important}
+
+    @media(max-width:900px){
+      .hero{grid-template-columns:1fr}
+      .routine-grid{grid-template-columns:1fr 1fr}
+      .features{grid-template-columns:1fr 1fr}
+      .dashboard-shell{grid-template-columns:1fr}
+      .stats-grid{grid-template-columns:repeat(2,1fr)}
+      .week-grid{grid-template-columns:repeat(3,1fr)}
+    }
+
+    @media(max-width:560px){
+      .topbar{padding:10px 12px}
+      .home-wrap,.workspace-shell{padding-left:12px;padding-right:12px}
+      .hero-card{padding:23px}
+      .hero h2{font-size:38px}
+      .routine-grid,.features{grid-template-columns:1fr}
+      .form-grid{grid-template-columns:1fr}
+      .field.full{grid-column:auto}
+      .topbar .status-pill{display:none}
+      .brand p{display:none}
+      .workspace-bar .btn.small{padding:8px}
+      .workspace-title h2{font-size:19px}
+      .class-row{grid-template-columns:70px minmax(0,1fr)}
+      .class-badge{display:none}
+      .week-grid{grid-template-columns:repeat(2,1fr)}
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="app" id="homeApp">
+
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo">MR</div>
+      <div>
+        <h1>MyRoutine</h1>
+        <p>Your routine. Your way.</p>
+      </div>
+    </div>
+
+    <div class="top-actions">
+      <span class="status-pill">
+        <i class="status-dot"></i>
+        Local workspace
+      </span>
+      <button class="icon-btn" type="button" onclick="openSettings()" aria-label="Settings">⚙️</button>
+      <button class="btn primary small" type="button" onclick="openCreateModal()">＋ New</button>
+    </div>
+  </header>
+
+  <div class="home-wrap">
+
+    <section class="hero">
+      <div class="hero-card">
+        <div class="eyebrow">✦ PERSONAL ROUTINE WORKSPACE</div>
+
+        <h2>
+          Build a routine that fits <span>you.</span>
+        </h2>
+
+        <p>
+          Create, import and manage school, college, university,
+          coaching, work or personal schedules from one clean workspace.
+        </p>
+
+        <div class="hero-actions">
+          <button class="btn primary" type="button" onclick="openCreateModal()">
+            Create Routine
+          </button>
+
+          <button class="btn" type="button" onclick="importRoutine()">
+            Import JSON
+          </button>
+
+          <button class="btn soft" type="button" onclick="openTemplates()">
+            Browse Templates
+          </button>
+        </div>
+      </div>
+
+      <aside class="hero-side">
+        <span class="mini-label">YOUR WORKSPACE</span>
+        <h3 id="heroRoutineTitle">Ready when you are.</h3>
+        <p id="heroRoutineMeta">
+          Import your timetable or create a new routine to unlock your dashboard.
+        </p>
+
+        <div class="hero-side-grid">
+          <div class="hero-side-item">
+            <b id="heroRoutineCount">0</b>
+            <span>Routines</span>
+          </div>
+          <div class="hero-side-item">
+            <b id="heroSubjectCount">0</b>
+            <span>Subjects</span>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <div class="section-head">
+      <div>
+        <h3>My Routines</h3>
+        <p>Your saved workspaces</p>
+      </div>
+
+      <button class="btn small" type="button" onclick="refreshHome()">
+        ↻ Refresh
+      </button>
+    </div>
+
+    <section id="routineList" class="routine-grid"></section>
+
+    <div class="section-head">
+      <div>
+        <h3>Everything you need</h3>
+        <p>Independent modules connected to the same routine workspace</p>
+      </div>
+    </div>
+
+    <section class="features">
+      <div class="feature">
+        <div class="feature-icon">📝</div>
+        <b>Routine Editor</b>
+        <span>Manage periods, subjects, teachers, rooms and weekly schedules.</span>
+      </div>
+
+      <div class="feature">
+        <div class="feature-icon">📊</div>
+        <b>Analytics</b>
+        <span>Understand your weekly schedule and subject distribution.</span>
+      </div>
+
+      <div class="feature">
+        <div class="feature-icon">🔗</div>
+        <b>Share</b>
+        <span>Share routines through supported codes, links or exported files.</span>
+      </div>
+
+      <div class="feature">
+        <div class="feature-icon">🖨️</div>
+        <b>Print</b>
+        <span>Generate clean timetable views for printing or saving.</span>
+      </div>
+
+      <div class="feature">
+        <div class="feature-icon">🔔</div>
+        <b>Notifications</b>
+        <span>Optional reminders while the workspace is open.</span>
+      </div>
+
+      <div class="feature">
+        <div class="feature-icon">🗓️</div>
+        <b>Calendar</b>
+        <span>Manage exams, holidays, classes and custom events.</span>
+      </div>
+
+      <div class="feature">
+        <div class="feature-icon">💾</div>
+        <b>Backup</b>
+        <span>Create and restore local routine snapshots.</span>
+      </div>
+
+      <div class="feature">
+        <div class="feature-icon">🎨</div>
+        <b>Customize</b>
+        <span>Adjust themes, working days, density and display preferences.</span>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+
+<!-- WORKSPACE / DASHBOARD -->
+<div id="workspace">
+
+  <div class="workspace-shell">
+
+    <div class="workspace-bar">
+      <button class="btn small" type="button" onclick="closeWorkspace()">← Home</button>
+
+      <div class="workspace-title">
+        <h2 id="workspaceName">MyRoutine</h2>
+        <p id="workspaceMeta">Routine workspace</p>
+      </div>
+
+      <button class="btn small" type="button" onclick="openViewer()">👁 View</button>
+      <button class="btn small" type="button" onclick="openEditor()">✏️ Edit</button>
+      <button class="btn small" type="button" onclick="openCalendar()">📅</button>
+      <button class="btn small" type="button" onclick="openSettings()">⚙️</button>
+    </div>
+
+    <div id="workspacePanel" class="workspace-panel"></div>
+
+  </div>
+</div>
+
+
+<!-- CREATE ROUTINE -->
+<div id="createModal" class="modal-backdrop" onclick="backdropClose(event,'createModal')">
+  <div class="modal">
+
+    <div class="modal-head">
+      <h3>Create a new routine</h3>
+      <button class="icon-btn" type="button" onclick="closeModal('createModal')">×</button>
+    </div>
+
+    <form id="createForm">
+
+      <div class="modal-body">
+
+        <div class="form-grid">
+
+          <div class="field full">
+            <label>Routine name *</label>
+            <input id="routineName" required placeholder="e.g. Class 11 Weekly Routine">
+          </div>
+
+          <div class="field">
+            <label>Institution type</label>
+            <select id="institutionType">
+              <option>School</option>
+              <option>College</option>
+              <option>University</option>
+              <option>Coaching Institute</option>
+              <option>Work</option>
+              <option>Personal</option>
+              <option>Other</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Institution name</label>
+            <input id="institutionName" placeholder="Optional">
+          </div>
+
+          <div class="field">
+            <label>Course / Class</label>
+            <input id="course" placeholder="e.g. Class 11 / B.Tech CSE">
+          </div>
+
+          <div class="field">
+            <label>Section</label>
+            <input id="section" placeholder="e.g. A">
+          </div>
+
+          <div class="field">
+            <label>Session</label>
+            <input id="session" placeholder="e.g. 2026–27">
+          </div>
+
+          <div class="field">
+            <label>Week starts</label>
+            <select id="weekStart">
+              <option value="Monday">Monday</option>
+              <option value="Sunday">Sunday</option>
+            </select>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn" type="button" onclick="closeModal('createModal')">Cancel</button>
+        <button class="btn primary" type="submit">Create & Open</button>
+      </div>
+
+    </form>
+  </div>
+</div>
+
+
+<div id="toast" class="toast"></div>
+
+
+<!-- Existing MyRoutine modules -->
+<script src="myroutine.js"></script>
+<script src="routine-ui.js"></script>
+<script src="routine-storage.js"></script>
+<script src="routine-data.js"></script>
+<script src="routine-settings.js"></script>
+<script src="routine-editor.js"></script>
+<script src="routine-view.js"></script>
+<script src="routine-share.js"></script>
+<script src="routine-calendar.js"></script>
+<script src="routine-notifications.js"></script>
+<script src="routine-templates.js"></script>
+<script src="routine-dashboard.js"></script>
+<script src="routine-search.js"></script>
+<script src="routine-analytics.js"></script>
+<script src="routine-backup.js"></script>
+<script src="routine-print.js"></script>
+
+
+<script>
+(function () {
+  "use strict";
+
+  window.MyRoutineIndex = {
+    workspaceOpen: false
+  };
+
+
+  function app() {
+    return window.MyRoutine || null;
+  }
+
+
+  function routines() {
+    const a = app();
+
+    if (!a) return [];
+
+    /*
+     * The current core exposes its real data
+     * through state.data.routines.
+     */
+    if (
+      a.state &&
+      a.state.data &&
+      Array.isArray(a.state.data.routines)
+    ) {
+      return a.state.data.routines;
+    }
+
+    if (typeof a.getRoutines === "function") {
+      try {
+        return a.getRoutines() || [];
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    if (
+      a.data &&
+      Array.isArray(a.data.routines)
+    ) {
+      return a.data.routines;
+    }
+
+    return [];
+  }
+
+
+  function activeRoutine() {
+    const a = app();
+
+    if (!a) return null;
+
+    if (typeof a.getActiveRoutine === "function") {
+      return a.getActiveRoutine();
+    }
+
+    const list = routines();
+
+    const id =
+      a.state &&
+      a.state.activeRoutineId;
+
+    return list.find(function (r) {
+      return r.id === id;
+    }) || null;
+  }
+
+
+  function notify(message) {
+    const toast =
+      document.getElementById("toast");
+
+    if (!toast) return;
+
+    toast.textContent = message;
+    toast.classList.add("show");
+
+    clearTimeout(window.__myRoutineToast);
+
+    window.__myRoutineToast =
+      setTimeout(function () {
+        toast.classList.remove("show");
+      }, 2300);
+  }
+
+  window.notifyMyRoutine = notify;
+
+
+  function escapeHtml(value) {
+    return String(value == null ? "" : value)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
+
+  function institutionName(routine) {
+    const institution =
+      routine.institution ||
+      routine.institutionName ||
+      (
+        routine.settings &&
+        routine.settings.institutionName
+      );
+
+    if (typeof institution === "object") {
+      return institution.name ||
+             institution.type ||
+             "Personal";
+    }
+
+    return institution || "Personal routine";
+  }
+
+
+  function courseName(routine) {
+    return (
+      routine.course ||
+      routine.className ||
+      (
+        routine.academic &&
+        routine.academic.course
+      ) ||
+      (
+        routine.settings &&
+        routine.settings.course
+      ) ||
+      ""
+    );
+  }
+
+
+  function renderHomeSummary(data) {
+    const count =
+      document.getElementById("heroRoutineCount");
+
+    const subjectCount =
+      document.getElementById("heroSubjectCount");
+
+    const title =
+      document.getElementById("heroRoutineTitle");
+
+    const meta =
+      document.getElementById("heroRoutineMeta");
+
+    const totalSubjects =
+      data.reduce(function (sum, routine) {
+        return sum +
+          (
+            Array.isArray(routine.subjects)
+              ? routine.subjects.length
+              : 0
+          );
+      }, 0);
+
+    if (count) {
+      count.textContent = data.length;
+    }
+
+    if (subjectCount) {
+      subjectCount.textContent = totalSubjects;
+    }
+
+    const first = data[0];
+
+    if (first) {
+      if (title) {
+        title.textContent =
+          first.name || "Your routine";
+      }
+
+      if (meta) {
+        meta.textContent =
+          institutionName(first) +
+          (
+            courseName(first)
+              ? " · " + courseName(first)
+              : ""
+          );
+      }
+    } else {
+      if (title) {
+        title.textContent = "Ready when you are.";
+      }
+
+      if (meta) {
+        meta.textContent =
+          "Import your timetable or create a new routine to unlock your dashboard.";
+      }
+    }
+  }
+
+
+  function renderRoutines() {
+
+    const list =
+      document.getElementById("routineList");
+
+    if (!list) return;
+
+    const data = routines();
+
+    renderHomeSummary(data);
+
+    if (!data.length) {
+
+      list.innerHTML =
+        '<div class="empty">' +
+          '<div class="empty-icon">🗓️</div>' +
+          '<strong>No routines yet.</strong><br>' +
+          '<span>Create your first routine or import a JSON timetable.</span>' +
+          '<div style="margin-top:16px;display:flex;justify-content:center;gap:8px;flex-wrap:wrap">' +
+            '<button class="btn primary" onclick="openCreateModal()">＋ Create Routine</button>' +
+            '<button class="btn" onclick="importRoutine()">Import JSON</button>' +
+          '</div>' +
+        '</div>';
+
+      return;
+    }
+
+
+    list.innerHTML =
+      data.map(function (routine, index) {
+
+        const subjects =
+          Array.isArray(routine.subjects)
+            ? routine.subjects.length
+            : 0;
+
+        const periods =
+          Array.isArray(routine.periods)
+            ? routine.periods.length
+            : 0;
+
+        return (
+          '<article class="routine-card">' +
+
+            '<div class="routine-card-top">' +
+
+              '<div class="routine-icon">' +
+                escapeHtml(
+                  (routine.name || "MR")
+                    .trim()
+                    .slice(0,2)
+                    .toUpperCase()
+                ) +
+              '</div>' +
+
+              '<span class="status-pill">' +
+                '<i class="status-dot"></i>' +
+                'Ready' +
+              '</span>' +
+
+            '</div>' +
+
+            '<h4>' +
+              escapeHtml(
+                routine.name ||
+                "Untitled Routine"
+              ) +
+            '</h4>' +
+
+            '<div class="routine-meta">' +
+              escapeHtml(
+                institutionName(routine)
+              ) +
+
+              (
+                courseName(routine)
+                  ? " · " +
+                    escapeHtml(
+                      courseName(routine)
+                    )
+                  : ""
+              ) +
+
+              '<br>' +
+
+              subjects +
+              ' subjects · ' +
+              periods +
+              ' periods' +
+
+            '</div>' +
+
+            '<div class="routine-actions">' +
+
+              '<button class="btn primary small" ' +
+                'onclick=\'openRoutineWorkspace(' +
+                JSON.stringify(routine.id) +
+                ')\'>Open workspace</button>' +
+
+              '<button class="btn small" ' +
+                'onclick=\'duplicateRoutine(' +
+                JSON.stringify(routine.id) +
+                ')\'>Duplicate</button>' +
+
+              '<button class="btn small" ' +
+                'onclick=\'deleteRoutine(' +
+                JSON.stringify(routine.id) +
+                ')\'>Delete</button>' +
+
+            '</div>' +
+
+          '</article>'
+        );
+
+      }).join("");
+  }
+
+
+  window.refreshHome = function () {
+    renderRoutines();
+  };
+
+
+  /* =====================================================
+     CREATE / MODAL
+     ===================================================== */
+
+  window.openCreateModal = function () {
+
+    const modal =
+      document.getElementById("createModal");
+
+    if (!modal) return;
+
+    modal.classList.add("open");
+
+    setTimeout(function () {
+
+      const input =
+        document.getElementById("routineName");
+
+      if (input) input.focus();
+
+    }, 80);
+  };
+
+
+  window.closeModal = function (id) {
+
+    const el =
+      document.getElementById(id);
+
+    if (el) {
+      el.classList.remove("open");
+    }
+  };
+
+
+  window.backdropClose = function (event, id) {
+
+    if (event.target.id === id) {
+      closeModal(id);
+    }
+  };
+
+
+  document
+    .getElementById("createForm")
+    .addEventListener(
+      "submit",
+      function (event) {
+
+        event.preventDefault();
+
+        const name =
+          document
+            .getElementById("routineName")
+            .value
+            .trim();
+
+        if (!name) return;
+
+        const payload = {
+
+          name,
+
+          institutionName:
+            document
+              .getElementById("institutionName")
+              .value
+              .trim(),
+
+          institutionType:
+            document
+              .getElementById("institutionType")
+              .value,
+
+          course:
+            document
+              .getElementById("course")
+              .value
+              .trim(),
+
+          section:
+            document
+              .getElementById("section")
+              .value
+              .trim(),
+
+          session:
+            document
+              .getElementById("session")
+              .value
+              .trim(),
+
+          weekStart:
+            document
+              .getElementById("weekStart")
+              .value
+        };
+
+        const a = app();
+
+        let created = null;
+
+        try {
+
+          if (
+            a &&
+            typeof a.createRoutine === "function"
+          ) {
+            created =
+              a.createRoutine(payload);
+          }
+
+        } catch (error) {
+          console.error(error);
+          notify("Could not create the routine.");
+        }
+
+        closeModal("createModal");
+
+        renderRoutines();
+
+        if (created && created.id) {
+
+          setTimeout(function () {
+            openRoutineWorkspace(
+              created.id
+            );
+          }, 100);
+
+        } else {
+          notify("Routine created.");
+        }
+      }
+    );
+
+
+  /* =====================================================
+     IMPORT JSON
+     ===================================================== */
+
+  window.importRoutine = function () {
+
+    const a = app();
+
+    if (
+      !a ||
+      typeof a.importRoutineFile !== "function"
+    ) {
+      notify(
+        "JSON importer is unavailable."
+      );
+      return;
+    }
+
+    const input =
+      document.createElement("input");
+
+    input.type = "file";
+    input.accept = ".json,application/json";
+
+    input.onchange =
+      async function () {
+
+        const file =
+          input.files &&
+          input.files[0];
+
+        if (!file) return;
+
+        try {
+
+          await a.importRoutineFile(file);
+
+          renderRoutines();
+
+          const current =
+            activeRoutine();
+
+          if (current) {
+            setTimeout(function () {
+              openRoutineWorkspace(
+                current.id
+              );
+            }, 100);
+          }
+
+          notify(
+            "JSON routine imported successfully."
+          );
+
+        } catch (error) {
+
+          console.error(error);
+
+          notify(
+            error.message ||
+            "Unable to import JSON."
+          );
+        }
+      };
+
+    input.click();
+  };
+
+
+  /* =====================================================
+     WORKSPACE DASHBOARD
+     ===================================================== */
+
+  function dayKey(date) {
+    return [
+      "sunday",
+      "monday",
+      "tuesday",
+      "wednesday",
+      "thursday",
+      "friday",
+      "saturday"
+    ][date.getDay()];
+  }
+
+
+  function todayClasses(routine) {
+
+    const day = dayKey(new Date());
+
+    const schedule =
+      routine.schedule || {};
+
+    const entries =
+      Array.isArray(schedule[day])
+        ? schedule[day]
+        : Array.isArray(schedule[
+            day.charAt(0).toUpperCase() +
+            day.slice(1)
+          ])
+          ? schedule[
+              day.charAt(0).toUpperCase() +
+              day.slice(1)
+            ]
+          : [];
+
+    return entries.map(function (entry) {
+
+      const period =
+        Array.isArray(routine.periods)
+          ? routine.periods.find(
+              p => p.id === entry.periodId
+            )
+          : null;
+
+      const subject =
+        Array.isArray(routine.subjects)
+          ? routine.subjects.find(
+              s => s.id === entry.subjectId
+            )
+          : null;
+
+      return {
+        entry,
+        period,
+        subject
+      };
+
+    });
+  }
+
+
+  function renderDashboard(routine) {
+
+    const panel =
+      document.getElementById(
+        "workspacePanel"
+      );
+
+    if (!panel) return;
+
+    const subjects =
+      Array.isArray(routine.subjects)
+        ? routine.subjects
+        : [];
+
+    const periods =
+      Array.isArray(routine.periods)
+        ? routine.periods
+        : [];
+
+    const classes =
+      todayClasses(routine);
+
+    const schedule =
+      routine.schedule || {};
+
+    const days = [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday"
+    ];
+
+    let totalClasses = 0;
+
+    days.forEach(function (day) {
+      const key =
+        day.toLowerCase();
+
+      const list =
+        Array.isArray(schedule[key])
+          ? schedule[key]
+          : Array.isArray(schedule[day])
+            ? schedule[day]
+            : [];
+
+      totalClasses += list.length;
+    });
+
+
+    const todayName =
+      new Date().toLocaleDateString(
+        "en-US",
+        { weekday:"long" }
+      );
+
+
+    const firstClass =
+      classes[0] || null;
+
+
+    let todayHTML = "";
+
+    if (!classes.length) {
+
+      todayHTML =
+        '<div class="empty" style="padding:24px">' +
+          '<div class="empty-icon">☕</div>' +
+          '<strong>No classes scheduled for ' +
+          escapeHtml(todayName) +
+          '.</strong><br>' +
+          '<span>Your timetable is clear today.</span>' +
+        '</div>';
+
+    } else {
+
+      todayHTML =
+        '<div class="today-list">' +
+
+          classes.map(function (item) {
+
+            const p =
+              item.period || {};
+
+            const s =
+              item.subject || {};
+
+            const time =
+              p.start && p.end
+                ? p.start + " – " + p.end
+                : "Scheduled";
+
+            return (
+              '<div class="class-row">' +
+
+                '<div class="class-time">' +
+                  escapeHtml(time) +
+                '</div>' +
+
+                '<div>' +
+                  '<div class="class-name">' +
+                    escapeHtml(
+                      s.name ||
+                      s.title ||
+                      "Class"
+                    ) +
+                  '</div>' +
+
+                  '<div class="class-sub">' +
+                    escapeHtml(
+                      s.teacher ||
+                      s.faculty ||
+                      ""
+                    ) +
+                  '</div>' +
+                '</div>' +
+
+                '<span class="class-badge">' +
+                  escapeHtml(
+                    p.room ||
+                    p.type ||
+                    "Class"
+                  ) +
+                '</span>' +
+
+              '</div>'
+            );
+
+          }).join("") +
+
+        '</div>';
+    }
+
+
+    const weekHTML =
+      days.map(function (day) {
+
+        const key =
+          day.toLowerCase();
+
+        const list =
+          Array.isArray(schedule[key])
+            ? schedule[key]
+            : Array.isArray(schedule[day])
+              ? schedule[day]
+              : [];
+
+        const width =
+          Math.min(
+            100,
+            Math.max(
+              10,
+              list.length * 18
+            )
+          );
+
+        const active =
+          day === todayName
+            ? " active"
+            : "";
+
+        return (
+          '<div class="day-card' +
+            active +
+          '">' +
+
+            '<div class="day-name">' +
+              day.slice(0,3) +
+            '</div>' +
+
+            '<div class="day-count">' +
+              list.length +
+              ' classes' +
+            '</div>' +
+
+            '<div class="day-bar">' +
+              '<i style="width:' +
+                width +
+              '%"></i>' +
+            '</div>' +
+
+          '</div>'
+        );
+
+      }).join("");
+
+
+    panel.innerHTML =
+
+      '<div class="dashboard-shell">' +
+
+        '<div class="dashboard-main">' +
+
+          '<section class="welcome">' +
+
+            '<small>' +
+              escapeHtml(
+                institutionName(routine)
+              ) +
+            '</small>' +
+
+            '<h3>' +
+              escapeHtml(
+                routine.name ||
+                "Your routine"
+              ) +
+            '</h3>' +
+
+            '<p>' +
+              escapeHtml(
+                courseName(routine) ||
+                "Your personal timetable workspace"
+              ) +
+            '</p>' +
+
+            '<div class="dashboard-actions">' +
+
+              '<button class="btn" onclick="openEditor()">✏️ Edit</button>' +
+              '<button class="btn" onclick="openViewer()">👁 Timetable</button>' +
+              '<button class="btn" onclick="openCalendar()">📅 Calendar</button>' +
+              '<button class="btn" onclick="openAnalytics()">📊 Analytics</button>' +
+
+            '</div>' +
+
+          '</section>' +
+
+
+          '<section class="stats-grid">' +
+
+            '<div class="stat-card">' +
+              '<span>Subjects</span>' +
+              '<strong>' +
+                subjects.length +
+              '</strong>' +
+              '<em>in this routine</em>' +
+            '</div>' +
+
+            '<div class="stat-card">' +
+              '<span>Periods</span>' +
+              '<strong>' +
+                periods.length +
+              '</strong>' +
+              '<em>defined slots</em>' +
+            '</div>' +
+
+            '<div class="stat-card">' +
+              '<span>Weekly classes</span>' +
+              '<strong>' +
+                totalClasses +
+              '</strong>' +
+              '<em>scheduled entries</em>' +
+            '</div>' +
+
+            '<div class="stat-card">' +
+              '<span>Today</span>' +
+              '<strong>' +
+                classes.length +
+              '</strong>' +
+              '<em>' +
+                escapeHtml(todayName) +
+              '</em>' +
+            '</div>' +
+
+          '</section>' +
+
+
+          '<section class="panel">' +
+
+            '<div class="panel-title">' +
+              '<h3>Today</h3>' +
+              '<span>' +
+                escapeHtml(todayName) +
+              '</span>' +
+            '</div>' +
+
+            (
+              firstClass
+                ? '<div class="next-class">' +
+                    '<div class="label">NEXT UP</div>' +
+                    '<h4>' +
+                      escapeHtml(
+                        (
+                          firstClass.subject || {}
+                        ).name ||
+                        (
+                          firstClass.subject || {}
+                        ).title ||
+                        "Scheduled class"
+                      ) +
+                    '</h4>' +
+                    '<p>' +
+                      escapeHtml(
+                        (
+                          firstClass.period || {}
+                        ).start || ""
+                      ) +
+                      (
+                        (
+                          firstClass.period || {}
+                        ).end
+                          ? " – " +
+                            (
+                              firstClass.period || {}
+                            ).end
+                          : ""
+                      ) +
+                    '</p>' +
+                  '</div>'
+                : ""
+            ) +
+
+            '<div style="margin-top:12px">' +
+              todayHTML +
+            '</div>' +
+
+          '</section>' +
+
+
+          '<section class="panel">' +
+
+            '<div class="panel-title">' +
+              '<h3>Week overview</h3>' +
+              '<span>Classes by day</span>' +
+            '</div>' +
+
+            '<div class="week-grid">' +
+              weekHTML +
+            '</div>' +
+
+          '</section>' +
+
+        '</div>' +
+
+
+        '<aside class="dashboard-side">' +
+
+          '<section class="panel">' +
+
+            '<div class="panel-title">' +
+              '<h3>Quick actions</h3>' +
+              '<span>Workspace</span>' +
+            '</div>' +
+
+            '<div class="quick-actions">' +
+
+              '<button class="quick-action" onclick="openEditor()">' +
+                '<b>✏️ Edit routine</b>' +
+                '<span>Change subjects & periods</span>' +
+              '</button>' +
+
+              '<button class="quick-action" onclick="openViewer()">' +
+                '<b>👁 View timetable</b>' +
+                '<span>Open the full timetable</span>' +
+              '</button>' +
+
+              '<button class="quick-action" onclick="openSearch()">' +
+                '<b>🔎 Search</b>' +
+                '<span>Find schedule entries</span>' +
+              '</button>' +
+
+              '<button class="quick-action" onclick="openTemplates()">' +
+                '<b>📋 Templates</b>' +
+                '<span>Start from a template</span>' +
+              '</button>' +
+
+              '<button class="quick-action" onclick="shareRoutine()">' +
+                '<b>🔗 Share</b>' +
+                '<span>Share your routine</span>' +
+              '</button>' +
+
+              '<button class="quick-action" onclick="openBackup()">' +
+                '<b>💾 Backup</b>' +
+                '<span>Protect your workspace</span>' +
+              '</button>' +
+
+            '</div>' +
+
+          '</section>' +
+
+
+          '<section class="panel">' +
+
+            '<div class="panel-title">' +
+              '<h3>Workspace tools</h3>' +
+              '<span>More</span>' +
+            '</div>' +
+
+            '<div class="quick-actions">' +
+
+              '<button class="quick-action" onclick="openNotifications()">' +
+                '<b>🔔 Notifications</b>' +
+                '<span>Reminder controls</span>' +
+              '</button>' +
+
+              '<button class="quick-action" onclick="printRoutine()">' +
+                '<b>🖨️ Print</b>' +
+                '<span>Printable timetable</span>' +
+              '</button>' +
+
+              '<button class="quick-action" onclick="openAnalytics()">' +
+                '<b>📊 Analytics</b>' +
+                '<span>Schedule insights</span>' +
+              '</button>' +
+
+              '<button class="quick-action" onclick="openSettings()">' +
+                '<b>⚙️ Settings</b>' +
+                '<span>Customize workspace</span>' +
+              '</button>' +
+
+            '</div>' +
+
+          '</section>' +
+
+        '</aside>' +
+
+      '</div>';
+
+
+    /*
+     * If the dedicated dashboard module exists,
+     * let it enhance the workspace after our
+     * stable fallback dashboard has rendered.
+     */
+    if (
+      window.MyRoutineDashboard &&
+      typeof window.MyRoutineDashboard.mount ===
+      "function"
+    ) {
+
+      try {
+        window.MyRoutineDashboard.mount(
+          "workspacePanel",
+          routine.id
+        );
+      } catch (error) {
+        console.warn(
+          "Dashboard module:",
+          error
+        );
+      }
+    }
+  }
+
+
+  window.openRoutineWorkspace =
+    function (id) {
+
+      const a = app();
+
+      if (!a) {
+        notify(
+          "Routine engine is still loading."
+        );
+        return;
+      }
+
+      if (a.state) {
+        a.state.activeRoutineId = id;
+      }
+
+      const routine =
+        routines().find(function (r) {
+          return r.id === id;
+        });
+
+      if (!routine) {
+        notify("Routine not found.");
+        return;
+      }
+
+      window.MyRoutineIndex.workspaceOpen = true;
+
+      document.getElementById(
+        "homeApp"
+      ).style.display = "none";
+
+      document.getElementById(
+        "workspace"
+      ).style.display = "block";
+
+      document.getElementById(
+        "workspaceName"
+      ).textContent =
+        routine.name || "MyRoutine";
+
+      document.getElementById(
+        "workspaceMeta"
+      ).textContent =
+        institutionName(routine) +
+        (
+          courseName(routine)
+            ? " · " + courseName(routine)
+            : ""
+        );
+
+      renderDashboard(routine);
+    };
+
+
+  window.closeWorkspace =
+    function () {
+
+      window.MyRoutineIndex.workspaceOpen = false;
+
+      document.getElementById(
+        "workspace"
+      ).style.display = "none";
+
+      document.getElementById(
+        "homeApp"
+      ).style.display = "block";
+
+      renderRoutines();
+    };
+
+
+  /* =====================================================
+     MODULE BRIDGES
+     ===================================================== */
+
+  function callModule(
+    objectName,
+    method,
+    args,
+    message
+  ) {
+
+    const object =
+      window[objectName];
+
+    if (
+      object &&
+      typeof object[method] === "function"
+    ) {
+
+      try {
+
+        return object[method].apply(
+          object,
+          args || []
+        );
+
+      } catch (error) {
+
+        console.error(
+          objectName + "." + method,
+          error
+        );
+
+        notify(
+          message ||
+          "This feature needs a little more setup."
+        );
+      }
+    }
+
+    notify(
+      message ||
+      "This feature is unavailable."
+    );
+
+    return null;
+  }
+
+
+  window.openEditor = function () {
+
+    const r = activeRoutine();
+
+    if (!r) {
+      notify("Select a routine first.");
+      return;
+    }
+
+    callModule(
+      "MyRoutineEditor",
+      "open",
+      [r.id],
+      "Editor module is unavailable."
+    );
+  };
+
+
+  window.openViewer = function () {
+
+    const r = activeRoutine();
+
+    if (!r) {
+      notify("Select a routine first.");
+      return;
+    }
+
+    callModule(
+      "MyRoutineViewer",
+      "open",
+      [r.id],
+      "Viewer module is unavailable."
+    );
+  };
+
+
+  window.openSettings = function () {
+
+    const r = activeRoutine();
+
+    callModule(
+      "MyRoutineSettings",
+      "open",
+      r ? [r.id] : [],
+      "Settings module is unavailable."
+    );
+  };
+
+
+  window.openCalendar = function () {
+
+    const r = activeRoutine();
+
+    if (!r) {
+      notify("Select a routine first.");
+      return;
+    }
+
+    callModule(
+      "MyRoutineCalendar",
+      "open",
+      [r.id],
+      "Calendar module is unavailable."
+    );
+  };
+
+
+  window.openSearch = function () {
+
+    callModule(
+      "MyRoutineSearch",
+      "open",
+      [],
+      "Search module is unavailable."
+    );
+  };
+
+
+  window.openTemplates = function () {
+
+    callModule(
+      "MyRoutineTemplates",
+      "open",
+      [],
+      "Template module is unavailable."
+    );
+  };
+
+
+  window.openAnalytics = function () {
+
+    const r = activeRoutine();
+
+    if (!r) {
+      notify("Select a routine first.");
+      return;
+    }
+
+    if (
+      window.MyRoutineAnalytics &&
+      typeof window.MyRoutineAnalytics.generateReport === "function"
+    ) {
+
+      try {
+
+        const report =
+          window.MyRoutineAnalytics.generateReport();
+
+        if (report) {
+
+          alert(
+            "Analytics\n\n" +
+            "Subjects: " +
+            report.basic.subjects +
+            "\nPeriods: " +
+            report.basic.periods +
+            "\nWeekly classes: " +
+            report.basic.scheduledClasses +
+            "\nTeachers: " +
+            report.basic.teachers +
+            "\nRooms: " +
+            report.basic.rooms +
+            "\nSchedule usage: " +
+            report.scheduleDensity.percentage +
+            "%"
+          );
+
+          return;
+        }
+
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    callModule(
+      "MyRoutineAnalytics",
+      "open",
+      [r.id],
+      "Analytics module is unavailable."
+    );
+  };
+
+
+  window.shareRoutine = function () {
+
+    const r = activeRoutine();
+
+    if (!r) {
+      notify("Select a routine first.");
+      return;
+    }
+
+    callModule(
+      "MyRoutineShare",
+      "open",
+      [r.id],
+      "Share module is unavailable."
+    );
+  };
+
+
+  window.printRoutine = function () {
+
+    const r = activeRoutine();
+
+    if (!r) {
+      notify("Select a routine first.");
+      return;
+    }
+
+    callModule(
+      "MyRoutinePrint",
+      "open",
+      [r.id],
+      "Print module is unavailable."
+    );
+  };
+
+
+  window.openNotifications = function () {
+
+    callModule(
+      "MyRoutineNotifications",
+      "open",
+      [],
+      "Notification module is unavailable."
+    );
+  };
+
+
+  window.openBackup = function () {
+
+    callModule(
+      "MyRoutineBackup",
+      "open",
+      [],
+      "Backup module is unavailable."
+    );
+  };
+
+
+  window.deleteRoutine = function (id) {
+
+    const routine =
+      routines().find(function (r) {
+        return r.id === id;
+      });
+
+    if (!routine) return;
+
+    if (
+      !confirm(
+        'Delete "' +
+        (routine.name || "this routine") +
+        '"?'
+      )
+    ) {
+      return;
+    }
+
+    const a = app();
+
+    if (
+      a &&
+      typeof a.deleteRoutine === "function"
+    ) {
+
+      a.deleteRoutine(id);
+
+      renderRoutines();
+
+      notify("Routine deleted.");
+
+      return;
+    }
+
+    notify(
+      "Delete function is unavailable."
+    );
+  };
+
+
+  window.duplicateRoutine = function (id) {
+
+    const a = app();
+
+    if (
+      a &&
+      typeof a.duplicateRoutine === "function"
+    ) {
+
+      a.duplicateRoutine(id);
+
+      renderRoutines();
+
+      notify("Routine duplicated.");
+
+      return;
+    }
+
+    notify(
+      "Duplicate function is unavailable."
+    );
+  };
+
+
+  /* =====================================================
+     EVENTS / INITIALIZATION
+     ===================================================== */
+
+  function initialize() {
+
+    renderRoutines();
+
+    document.addEventListener(
+      "myroutine:ready",
+      function () {
+
+        renderRoutines();
+
+        const current =
+          activeRoutine();
+
+        if (
+          window.MyRoutineIndex.workspaceOpen &&
+          current
+        ) {
+          renderDashboard(current);
+        }
+
+      }
+    );
+
+
+    [
+      "myroutine:changed",
+      "myroutine:updated",
+      "myroutine:saved"
+    ].forEach(function (eventName) {
+
+      document.addEventListener(
+        eventName,
+        function () {
+
+          renderRoutines();
+
+          if (
+            window.MyRoutineIndex.workspaceOpen
+          ) {
+
+            const current =
+              activeRoutine();
+
+            if (current) {
+              renderDashboard(current);
+            }
+          }
+
+        }
+      );
+
+    });
+
+
+    /*
+     * The core loads asynchronously.
+     * These short retries make the UI resilient
+     * to script-loading order and cached pages.
+     */
+    let attempts = 0;
+
+    const sync =
+      setInterval(function () {
+
+        renderRoutines();
+
+        attempts++;
+
+        if (
+          routines().length > 0 ||
+          attempts >= 20
+        ) {
+          clearInterval(sync);
+        }
+
+      }, 500);
+
+
+    window.addEventListener(
+      "keydown",
+      function (event) {
+
+        if (event.key === "Escape") {
+
+          document
+            .querySelectorAll(
+              ".modal-backdrop.open"
+            )
+            .forEach(function (modal) {
+              modal.classList.remove("open");
+            });
+        }
+
+        if (
+          (event.ctrlKey || event.metaKey) &&
+          event.key.toLowerCase() === "n"
+        ) {
+
+          event.preventDefault();
+
+          openCreateModal();
+        }
+
+      }
+    );
+  }
+
+
+  if (
+    document.readyState === "loading"
+  ) {
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      initialize
+    );
+
+  } else {
+
+    initialize();
+
+  }
+
+})();
+</script>
+
+</body>
+</html>
