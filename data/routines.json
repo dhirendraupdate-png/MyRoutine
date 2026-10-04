@@ -4,5 +4,229 @@
     "name": "MyRoutine",
     "tagline": "Your routine. Your way."
   },
-  "routines": []
+  "routines": [
+    {
+      "id": "jee-class-11",
+      "name": "JEE Class 11",
+      "description": "Daily JEE Main & Advanced preparation workspace",
+      "profile": {
+        "name": "JEE Aspirant",
+        "goal": "JEE Main & Advanced",
+        "class": "Class 11",
+        "stream": "Science"
+      },
+      "schedule": {
+        "monday": [
+          {
+            "id": "mon-physics",
+            "title": "Physics",
+            "subject": "Physics",
+            "start": "06:00",
+            "end": "08:00",
+            "type": "study"
+          },
+          {
+            "id": "mon-chemistry",
+            "title": "Chemistry",
+            "subject": "Chemistry",
+            "start": "09:00",
+            "end": "11:00",
+            "type": "study"
+          },
+          {
+            "id": "mon-maths",
+            "title": "Mathematics",
+            "subject": "Mathematics",
+            "start": "17:00",
+            "end": "19:00",
+            "type": "study"
+          }
+        ],
+        "tuesday": [
+          {
+            "id": "tue-maths",
+            "title": "Mathematics",
+            "subject": "Mathematics",
+            "start": "06:00",
+            "end": "08:00",
+            "type": "study"
+          },
+          {
+            "id": "tue-physics",
+            "title": "Physics",
+            "subject": "Physics",
+            "start": "09:00",
+            "end": "11:00",
+            "type": "study"
+          },
+          {
+            "id": "tue-chemistry",
+            "title": "Chemistry",
+            "subject": "Chemistry",
+            "start": "17:00",
+            "end": "19:00",
+            "type": "study"
+          }
+        ],
+        "wednesday": [
+          {
+            "id": "wed-chemistry",
+            "title": "Chemistry",
+            "subject": "Chemistry",
+            "start": "06:00",
+            "end": "08:00",
+            "type": "study"
+          },
+          {
+            "id": "wed-maths",
+            "title": "Mathematics",
+            "subject": "Mathematics",
+            "start": "09:00",
+            "end": "11:00",
+            "type": "study"
+          },
+          {
+            "id": "wed-physics",
+            "title": "Physics",
+            "subject": "Physics",
+            "start": "17:00",
+            "end": "19:00",
+            "type": "study"
+          }
+        ],
+        "thursday": [
+          {
+            "id": "thu-physics",
+            "title": "Physics",
+            "subject": "Physics",
+            "start": "06:00",
+            "end": "08:00",
+            "type": "study"
+          },
+          {
+            "id": "thu-maths",
+            "title": "Mathematics",
+            "subject": "Mathematics",
+            "start": "09:00",
+            "end": "11:00",
+            "type": "study"
+          },
+          {
+            "id": "thu-chemistry",
+            "title": "Chemistry",
+            "subject": "Chemistry",
+            "start": "17:00",
+            "end": "19:00",
+            "type": "study"
+          }
+        ],
+        "friday": [
+          {
+            "id": "fri-maths",
+            "title": "Mathematics",
+            "subject": "Mathematics",
+            "start": "06:00",
+            "end": "08:00",
+            "type": "study"
+          },
+          {
+            "id": "fri-chemistry",
+            "title": "Chemistry",
+            "subject": "Chemistry",
+            "start": "09:00",
+            "end": "11:00",
+            "type": "study"
+          },
+          {
+            "id": "fri-physics",
+            "title": "Physics",
+            "subject": "Physics",
+            "start": "17:00",
+            "end": "19:00",
+            "type": "study"
+          }
+        ],
+        "saturday": [
+          {
+            "id": "sat-revision",
+            "title": "Weekly Revision",
+            "subject": "Revision",
+            "start": "08:00",
+            "end": "10:00",
+            "type": "revision"
+          },
+          {
+            "id": "sat-pyq",
+            "title": "PYQ Practice",
+            "subject": "Practice",
+            "start": "11:00",
+            "end": "13:00",
+            "type": "practice"
+          },
+          {
+            "id": "sat-test",
+            "title": "Weekly Test",
+            "subject": "Test",
+            "start": "17:00",
+            "end": "19:00",
+            "type": "test"
+          }
+        ],
+        "sunday": [
+          {
+            "id": "sun-revision",
+            "title": "Weekly Review",
+            "subject": "Revision",
+            "start": "08:00",
+            "end": "10:00",
+            "type": "revision"
+          },
+          {
+            "id": "sun-backlog",
+            "title": "Backlog Clearing",
+            "subject": "Backlog",
+            "start": "11:00",
+            "end": "13:00",
+            "type": "backlog"
+          },
+          {
+            "id": "sun-planning",
+            "title": "Plan Next Week",
+            "subject": "Planning",
+            "start": "18:00",
+            "end": "19:00",
+            "type": "planning"
+          }
+        ]
+      },
+      "tasks": [
+        {
+          "id": "task-physics",
+          "title": "Complete Physics lecture",
+          "subject": "Physics",
+          "completed": false,
+          "priority": "high"
+        },
+        {
+          "id": "task-chemistry",
+          "title": "Revise Chemistry notes",
+          "subject": "Chemistry",
+          "completed": false,
+          "priority": "medium"
+        },
+        {
+          "id": "task-maths",
+          "title": "Solve Mathematics practice problems",
+          "subject": "Mathematics",
+          "completed": false,
+          "priority": "high"
+        }
+      ],
+      "settings": {
+        "weekStartsOn": "monday",
+        "notifications": true,
+        "showCompletedTasks": true
+      }
+    }
+  ]
 }
