@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#111827">
+<meta name="description" content="MyRoutine — Create and manage routines for school, college, university, coaching and personal schedules.">
+<title>MyRoutine — Your Routine. Your Way.</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}body{min-height:100vh;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#f5f7fb;color:#111827}button,input,select{font:inherit}button{cursor:pointer}.app{min-height:100vh;display:flex;flex-direction:column}.header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:blur(16px);border-bottom:1px solid #e5e7eb}.header-inner{width:min(1180px,calc(100% - 32px));min-height:72px;margin:auto;display:flex;align-items:center;justify-content:space-between}.brand{display:flex;align-items:center;gap:11px;font-size:1.2rem;font-weight:800}.brand-icon{width:42px;height:42px;border-radius:13px;display:grid;place-items:center;color:#fff;background:linear-gradient(135deg,#2563eb,#7c3aed)}main{width:min(1180px,calc(100% - 32px));margin:auto;flex:1;padding:40px 0 70px}.hero{text-align:center;max-width:800px;margin:20px auto 42px}.hero-badge{display:inline-flex;padding:7px 13px;border-radius:999px;background:#eff6ff;color:#2563eb;font-size:.85rem;font-weight:700;margin-bottom:18px}.hero h1{font-size:clamp(2.6rem,7vw,5rem);line-height:.98;letter-spacing:-.06em;margin-bottom:20px}.gradient-text{background:linear-gradient(90deg,#2563eb,#7c3aed);-webkit-background-clip:text;background-clip:text;color:transparent}.hero p{color:#6b7280;font-size:1.08rem;line-height:1.7;max-width:680px;margin:auto}.btn{border:0;border-radius:11px;padding:11px 17px;font-weight:700}.btn-primary{background:#2563eb;color:#fff}.btn-primary:hover{background:#1d4ed8}.btn-secondary{background:#f3f4f6;color:#111827}.btn-danger{background:#fee2e2;color:#dc2626}.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-bottom:42px}.card,.routine-card{background:#fff;border:1px solid #e5e7eb;border-radius:18px;box-shadow:0 10px 30px rgba(15,23,42,.08);padding:24px}.action-card{transition:transform .2s}.action-card:hover{transform:translateY(-4px)}.card-icon{width:48px;height:48px;display:grid;place-items:center;border-radius:14px;background:#eff6ff;color:#2563eb;font-size:1.3rem;margin-bottom:17px}.action-card h2{font-size:1.05rem;margin-bottom:8px}.action-card p{color:#6b7280;font-size:.9rem;line-height:1.5}.action-card button{width:100%;margin-top:18px}.section-title{text-align:center;margin-bottom:22px}.section-title h2{font-size:1.7rem;margin-bottom:6px}.section-title p{color:#6b7280}.features{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.feature{background:rgba(255,255,255,.75);border:1px solid #e5e7eb;border-radius:16px;padding:20px}.feature strong{display:block;margin-bottom:6px}.feature span{color:#6b7280;font-size:.9rem;line-height:1.5}.dashboard{display:none}.dashboard.active{display:block}.home.hidden{display:none}.welcome{margin-bottom:22px}.welcome h2{font-size:1.8rem;margin-bottom:5px}.welcome p{color:#6b7280}.routine-top{display:flex;align-items:flex-start;justify-content:space-between;gap:15px}.routine-title{display:flex;gap:15px;align-items:center}.routine-logo{width:52px;height:52px;border-radius:15px;display:grid;place-items:center;background:#eff6ff;color:#2563eb;font-size:1.4rem}.routine-title h3{margin-bottom:4px}.routine-title p{color:#6b7280;font-size:.9rem}.routine-actions{display:flex;gap:8px;flex-wrap:wrap}.routine-info{display:flex;gap:8px;flex-wrap:wrap;margin-top:20px}.tag{padding:6px 10px;border-radius:999px;background:#f3f4f6;color:#4b5563;font-size:.8rem;font-weight:600}.empty{text-align:center;padding:50px 20px;background:#fff;border:1px dashed #cbd5e1;border-radius:18px}.empty-icon{font-size:2.5rem;margin-bottom:15px}.empty h3{margin-bottom:8px}.empty p{color:#6b7280;margin-bottom:20px}.modal-backdrop{position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(15,23,42,.55);backdrop-filter:blur(5px)}.modal-backdrop.open{display:flex}.modal{width:min(650px,100%);max-height:90vh;overflow:auto;background:#fff;border-radius:22px;padding:26px;box-shadow:0 30px 80px rgba(0,0,0,.25)}.modal-header{display:flex;justify-content:space-between;gap:15px;margin-bottom:24px}.modal-header h2{font-size:1.5rem}.modal-header p{color:#6b7280;margin-top:5px}.close{width:38px;height:38px;border:0;border-radius:10px;background:#f3f4f6;font-size:1.2rem}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.field{display:flex;flex-direction:column;gap:7px}.field.full{grid-column:1/-1}.field label{font-size:.86rem;font-weight:700}.field input,.field select{width:100%;padding:12px;border:1px solid #e5e7eb;border-radius:11px;background:#fff;outline:none}.field input:focus,.field select:focus{border-color:#2563eb;box-shadow:0 0 0 3px rgba(37,99,235,.1)}.modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:25px}footer{border-top:1px solid #e5e7eb;background:rgba(255,255,255,.7);padding:25px 16px;text-align:center;color:#6b7280;font-size:.85rem}@media(max-width:900px){.cards{grid-template-columns:repeat(2,1fr)}.features{grid-template-columns:repeat(2,1fr)}}@media(max-width:600px){.header-inner{min-height:64px}.header-actions{display:none}main{padding-top:28px}.hero h1{font-size:3.2rem}.cards,.features{grid-template-columns:1fr}.card,.routine-card{padding:20px}.form-grid{grid-template-columns:1fr}.field.full{grid-column:auto}.routine-top{flex-direction:column}.routine-actions{width:100%}.routine-actions .btn{flex:1}.modal{padding:20px}}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="header"><div class="header-inner"><div class="brand"><div class="brand-icon">✓</div><span>MyRoutine</span></div><div class="header-actions"><button class="btn btn-primary" onclick="openCreateModal()">+ Create Routine</button></div></div></header>
+<main>
+<section id="home" class="home">
+<div class="hero"><div class="hero-badge">✨ Universal Routine Builder</div><h1>Your routine.<br><span class="gradient-text">Your way.</span></h1><p>Create and manage routines for your school, college, university, coaching institute or personal schedule — all in one place.</p></div>
+<div class="cards">
+<article class="card action-card"><div class="card-icon">＋</div><h2>Create New Routine</h2><p>Build a customized routine for any institution, class, course or schedule.</p><button class="btn btn-primary" onclick="openCreateModal()">Create Routine</button></article>
+<article class="card action-card"><div class="card-icon">📚</div><h2>My Routines</h2><p>Manage all your school, college, coaching and personal routines.</p><button class="btn btn-secondary" onclick="showDashboard()">Open My Routines</button></article>
+<article class="card action-card"><div class="card-icon">📥</div><h2>Import Routine</h2><p>Restore a routine from a JSON backup file.</p><button class="btn btn-secondary" onclick="document.getElementById('importInput').click()">Import</button></article>
+<article class="card action-card"><div class="card-icon">⚙️</div><h2>Customize</h2><p>Personalize your routine and timetable settings.</p><button class="btn btn-secondary" onclick="showDashboard()">Customize</button></article>
+</div>
+<div class="section-title"><h2>Everything for your timetable</h2><p>Built for every kind of student.</p></div>
+<div class="features"><div class="feature"><strong>🏫 Any Institution</strong><span>School, college, university, coaching or personal routine.</span></div><div class="feature"><strong>📅 Flexible Days</strong><span>Choose your own working days.</span></div><div class="feature"><strong>⏰ Custom Periods</strong><span>Add classes, breaks, labs and special sessions.</span></div><div class="feature"><strong>👨‍🏫 Teachers & Rooms</strong><span>Store teachers and room information.</span></div><div class="feature"><strong>🎨 Personalization</strong><span>Customize your timetable appearance.</span></div><div class="feature"><strong>📱 Mobile First</strong><span>Designed for phones, tablets and desktops.</span></div></div>
+</section>
+<section id="dashboard" class="dashboard"><div class="welcome"><h2>My Routines</h2><p>Manage all your routines from one place.</p></div><div id="routineList"></div></section>
+</main>
+<footer><strong>MyRoutine</strong> · Your routine. Your way.</footer>
+</div>
+<div class="modal-backdrop" id="createModal"><div class="modal"><div class="modal-header"><div><h2>Create New Routine</h2><p>Start by telling us about your routine.</p></div><button class="close" onclick="closeCreateModal()">×</button></div>
+<form id="routineForm"><div class="form-grid">
+<div class="field full"><label>Routine Name</label><input id="routineName" type="text" placeholder="e.g. My College Routine" required></div>
+<div class="field full"><label>Institution Type</label><select id="institutionType" required><option value="">Select type</option><option>School</option><option>College</option><option>University</option><option>Coaching Institute</option><option>Training Institute</option><option>Personal</option><option>Other</option></select></div>
+<div class="field full"><label>Institution Name</label><input id="institutionName" type="text" placeholder="e.g. Gurucharan University" required></div>
+<div class="field"><label>Class / Course</label><input id="courseName" type="text" placeholder="e.g. Class 11 Science"></div>
+<div class="field"><label>Section / Semester</label><input id="section" type="text" placeholder="e.g. Section A"></div>
+<div class="field"><label>Academic Session</label><input id="session" type="text" placeholder="e.g. 2026-27"></div>
+<div class="field"><label>Week Starts On</label><select id="weekStart"><option>Monday</option><option>Sunday</option></select></div>
+</div><div class="modal-actions"><button type="button" class="btn btn-secondary" onclick="closeCreateModal()">Cancel</button><button type="submit" class="btn btn-primary">Create & Continue →</button></div></form>
+</div></div>
+<input id="importInput" type="file" accept=".json,application/json" hidden>
+<script src="myroutine.js"></script>
+<script>
+const createModal=document.getElementById("createModal");
+function openCreateModal(){createModal.classList.add("open");document.body.style.overflow="hidden"}
+function closeCreateModal(){createModal.classList.remove("open");document.body.style.overflow=""}
+createModal.addEventListener("click",e=>{if(e.target===createModal)closeCreateModal()});
+function showDashboard(){document.getElementById("home").classList.add("hidden");document.getElementById("dashboard").classList.add("active");renderRoutineList()}
+function renderRoutineList(){
+const c=document.getElementById("routineList");
+if(!window.MyRoutine||!window.MyRoutine.state){c.innerHTML='<div class="empty"><div class="empty-icon">⏳</div><h3>Loading routines...</h3></div>';return}
+const rs=window.MyRoutine.state.data?.routines||[];
+if(!rs.length){c.innerHTML='<div class="empty"><div class="empty-icon">📅</div><h3>No routines yet</h3><p>Create your first routine to get started.</p><button class="btn btn-primary" onclick="openCreateModal()">+ Create My First Routine</button></div>';return}
+c.innerHTML=rs.map(r=>`<article class="routine-card"><div class="routine-top"><div class="routine-title"><div class="routine-logo">📅</div><div><h3>${esc(r.name)}</h3><p>${esc(r.institution?.name||"My Institution")}</p></div></div><div class="routine-actions"><button class="btn btn-primary" onclick="openRoutine('${esc(r.id)}')">Open</button><button class="btn btn-secondary" onclick="duplicateRoutine('${esc(r.id)}')">Duplicate</button><button class="btn btn-danger" onclick="removeRoutine('${esc(r.id)}')">Delete</button></div></div><div class="routine-info"><span class="tag">${esc(r.institution?.type||"Other")}</span><span class="tag">${esc(r.academic?.course||"No course")}</span><span class="tag">${esc(r.academic?.session||"No session")}</span><span class="tag">${(r.periods||[]).length} periods</span><span class="tag">${(r.subjects||[]).length} subjects</span></div></article>`).join("");
+}
+document.getElementById("routineForm").addEventListener("submit",e=>{e.preventDefault();window.MyRoutine.createRoutine({name:document.getElementById("routineName").value.trim(),institutionType:document.getElementById("institutionType").value,institutionName:document.getElementById("institutionName").value.trim(),course:document.getElementById("courseName").value.trim(),section:document.getElementById("section").value.trim(),session:document.getElementById("session").value.trim(),weekStart:document.getElementById("weekStart").value});closeCreateModal();e.target.reset();showDashboard()});
+function removeRoutine(id){if(confirm("Delete this routine?")){window.MyRoutine.deleteRoutine(id);renderRoutineList()}}
+function duplicateRoutine(id){window.MyRoutine.duplicateRoutine(id);renderRoutineList()}
+function openRoutine(id){window.MyRoutine.state.activeRoutineId=id;window.MyRoutine.saveRoutines();const r=window.MyRoutine.getActiveRoutine();if(r)alert("Routine selected: "+r.name+"
+
+The full timetable editor will be added in the next phase.")}
+function esc(v){return String(v??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;")}
+document.getElementById("importInput").addEventListener("change",async e=>{const f=e.target.files[0];if(!f)return;try{await window.MyRoutine.importRoutineFile(f);alert("Routine imported successfully! 🎉");showDashboard()}catch(err){alert("Import failed. Please select a valid MyRoutine JSON file.");console.error(err)}e.target.value=""});
+document.addEventListener("myroutine:ready",()=>console.log("MyRoutine engine ready."));
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeCreateModal()});
+</script>
+</body>
+</html>
