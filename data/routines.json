@@ -1,1 +1,10 @@
-{"version":1,"app":{"name":"MyRoutine","tagline":"Your routine. Your way."},"routines":[]}
+{
+  "version": 1,
+  "app": {
+    "name": "MyRoutine",
+    "tagline": "Your routine. Your way."
+  },
+  "routines": [
+    ...
+  ]
+}
